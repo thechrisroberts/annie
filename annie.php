@@ -3,7 +3,7 @@
 Plugin Name: Annie
 Plugin URI: http://croberts.me/annie/
 Description: Provides comprehensive annotation tools for WordPress posts.
-Version: 2.0.0
+Version: 2.0.1
 Author: Chris Roberts
 Author URI: http://croberts.me/
 */
@@ -51,6 +51,17 @@ class Annie {
 		add_action('admin_head', array($this, 'load_for_admin'));
 
 		add_action('wp_head', array($this, 'load_globals'));
+
+		add_filter('plugin_action_links', array($this, 'settings_link'), 10, 2);
+	}
+
+	public function settings_link($links, $file) { 
+		if ($file == 'annie/annie.php') {
+			$settings_link = '<a href="options-general.php?page=annie.php">Settings</a>'; 
+			array_push($links, $settings_link);
+		}
+		
+		return $links; 
 	}
 
 	public function addoptions()
@@ -105,20 +116,19 @@ class Annie {
 				'href' => $annie_footnoteLink,
 				'text' => $annie_cleanText,
 				'class' => 'annie_footnoteRef annie_custom',
+				'name' => '"foot_loc_'. $post->ID . '_'. $this->footcount .'"',
 				'item' => 'foot_tip_'. $post->ID . "_". $this->footcount,
 				'useDiv' => true
 			);
-			
+
 			$annie_returnLink = $tippy->getLink($annie_tippyValues);
-			
-			$annie_returnLink = str_replace('<a ', '<a name="foot_loc_'. $post->ID . '_'. $this->footcount .'" ', $annie_returnLink);
 		} else {
-			$annie_returnLink = '<a name="foot_loc_'. $post->ID . '_'. $this->footcount .'" class="annie_footnoteRef annie_custom" title="'. $annie_cleanText .'" href="'. get_permalink($post->ID) .'#foot_text_'. $post->ID . '_'. $this->footcount .'">'. $this->footcount .'</a>';
+			$annie_returnLink = '<a name="foot_loc_'. $post->ID . '_'. $this->footcount .'" class="annie_footnoteRef annie_custom" title="'. strip_tags($annie_cleanText) .'" href="'. get_permalink($post->ID) .'#foot_text_'. $post->ID . '_'. $this->footcount .'">'. $this->footcount .'</a>';
 		}
 		
 		$this->footcount++;
 		$this->showToolbox = true;
-		
+
 		return $annie_returnLink;
 	}
 
