@@ -3,7 +3,7 @@
 Plugin Name: Annie
 Plugin URI: http://croberts.me/annie/
 Description: Provides comprehensive annotation tools for WordPress posts.
-Version: 2.0.1
+Version: 2.0.2
 Author: Chris Roberts
 Author URI: http://croberts.me/
 */
@@ -144,9 +144,9 @@ class Annie {
 	public // Handle extras when showing content
 	function process_content($content)
 	{
-		global $post, $is_page_val;
+		global $post;
 		
-		if (!$this->footnotesShowing && (is_single() || $is_page_val) && get_option('annie_footnoteShowNotes', 'show') == 'show' && sizeof($this->footnoteText) > 0) {
+		if (!$this->footnotesShowing && (is_single() || $this->is_page_val) && get_option('annie_footnoteShowNotes', 'show') == 'show' && sizeof($this->footnoteText) > 0) {
 			$footnoteHeader = get_option('annie_footnoteNotesHeader', 'Notes:');
 			$content .= '<div class="annie_notes annie_custom"><span class="annie_noteHeader annie_custom">'. $footnoteHeader .'</span><br />';
 			
