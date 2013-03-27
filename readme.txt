@@ -2,8 +2,8 @@
 Contributors: Columcille
 Tags: annotation, highlight, footnote
 Requires at least: 3.0.0
-Tested up to: 3.4.2
-Stable tag: 1.4.6
+Tested up to: 3.5.1
+Stable tag: 2.0.0
 
 Provides comprehensive annotation tools for WordPress posts.
 
@@ -40,6 +40,10 @@ To define new highlighter styles, simply add a rule to your stylesheet following
 2. Seeing the results!
 
 == Changelog ==
+
+= 2.0.0 =
+* Annie now set up as a php class
+* html styling now shows up in footnote tooltips
 
 = 1.4.6 =
 * Fixed an issue showing highlights from the toolbar.
