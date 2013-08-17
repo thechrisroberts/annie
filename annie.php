@@ -3,7 +3,7 @@
 Plugin Name: Annie
 Plugin URI: http://croberts.me/annie/
 Description: Provides comprehensive annotation tools for WordPress posts.
-Version: 2.0.3
+Version: 2.1.1
 Author: Chris Roberts
 Author URI: http://croberts.me/
 */
@@ -95,7 +95,7 @@ class Annie {
 
 	public function footnote_shortcode($annie_attributes, $annieText = '')
 	{
-		global $post, $tippy;
+		global $post;
 		
 		// Store the text in our array
 		$this->footnoteText[$this->footcount] = $annieText;
@@ -107,12 +107,17 @@ class Annie {
 		// $annie_cleanText = str_replace('[', '{', $annie_cleanText);
 		
 		// Format the footnote reference
-		if (is_object($tippy) && get_option('annie_footnoteDisplay', 'link') == 'tooltip') {
+		if (method_exists('Tippy', 'getOption') && get_option('annie_footnoteDisplay', 'link') == 'tooltip') {
 			$annie_footnoteLink = get_permalink($post->ID) ."#foot_text_". $post->ID . "_". $this->footcount;
-			
+			$annie_footnoteTitle = $this->footcount;
+
+			if (get_option('annie_footnoteFormat', 'numbers') == "other") {
+				$annie_footnoteTitle = get_option('annie_footnoteFormatText', '*');
+			}
+
 			$annie_tippyValues = array(
 				'header' => 'off',
-				'title' => $this->footcount,
+				'title' => $annie_footnoteTitle,
 				'href' => $annie_footnoteLink,
 				'text' => $annie_cleanText,
 				'class' => 'annie_footnoteRef annie_custom',
@@ -121,7 +126,7 @@ class Annie {
 				'useDiv' => true
 			);
 
-			$annie_returnLink = $tippy->getLink($annie_tippyValues);
+			$annie_returnLink = Tippy::getLink($annie_tippyValues);
 		} else {
 			$annie_returnLink = '<a name="foot_loc_'. $post->ID . '_'. $this->footcount .'" class="annie_footnoteRef annie_custom" title="'. strip_tags($annie_cleanText) .'" href="'. get_permalink($post->ID) .'#foot_text_'. $post->ID . '_'. $this->footcount .'">'. $this->footcount .'</a>';
 		}
@@ -150,8 +155,14 @@ class Annie {
 			$content .= '<div class="annie_notes annie_custom"><span class="annie_noteHeader annie_custom">'. $footnoteHeader .'</span><br />';
 			
 			foreach ($this->footnoteText as $footnoteIndex => $footnoteText) {
+				$linkTitle = $footnoteIndex;
+
+				if (get_option('annie_footnoteFormat', 'numbers') == "other") {
+					$linkTitle = get_option('annie_footnoteFormatText', '*');
+				}
+
 				$content .= "\n";
-				$content .= '<div class="annie_note_container"><a name="foot_text_'. $post->ID . '_'. $footnoteIndex .'" href="#foot_loc_'. $post->ID . '_'. $footnoteIndex .'">'. $footnoteIndex .'</a>. '. $footnoteText .'</div>';
+				$content .= '<div class="annie_note_container"><a name="foot_text_'. $post->ID . '_'. $footnoteIndex .'" href="#foot_loc_'. $post->ID . '_'. $footnoteIndex .'">'. $linkTitle .'</a>. '. $footnoteText .'</div>';
 				$content .= "\n";
 			}
 			
@@ -202,7 +213,7 @@ class Annie {
 		// Load jQuery, if not already present
 		wp_enqueue_script('jquery');
 		
-		// Load the Tippy script
+		// Load the Annie script
 		wp_register_script('Annie', plugins_url() .'/annie/annie.js', array('jquery'));
 		wp_enqueue_script('Annie');
 	}

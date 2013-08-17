@@ -7,6 +7,8 @@ if (! function_exists('annie_options_subpanel')) {
 		update_option('annie_footnoteDisplay', $_POST['annie_footnoteDisplay']);
 		update_option('annie_footnoteShowNotes', $_POST['annie_footnoteShowNotes']);
 		update_option('annie_footnoteNotesHeader', $_POST['annie_footnoteNotesHeader']);
+		update_option('annie_footnoteFormat', $_POST['annie_footnoteFormat']);
+		update_option('annie_footnoteFormatText', $_POST['annie_footnoteFormatText']);
 		update_option('annie_defaultHighlight', $_POST['annie_defaultHighlight']);
 		update_option('annie_defaultHighlightCustom', $_POST['annie_defaultHighlightCustom']);
 		update_option('annie_showToolbox', $_POST['annie_showToolbox']);
@@ -64,6 +66,12 @@ if (! function_exists('annie_options_subpanel')) {
 				</label><br /><br />
 		</div>
 		
+		<div class="annieOptions">
+			<input id="annie_footnoteFormat_numbers" name="annie_footnoteFormat" type="radio" value="numbers" <?php if (get_option('annie_footnoteFormat', 'numbers') == "numbers") echo 'checked="checked"'; ?> /> <label for="annie_footnoteFormat_numbers">Footnote reference uses numbers</label><br />
+
+			<input id="annie_footnoteFormat_other" name="annie_footnoteFormat" type="radio" value="other" <?php if (get_option('annie_footnoteFormat', 'numbers') == "other") echo 'checked="checked"'; ?> /> <label for="annie_footnoteFormat_other">Footnote reference custom defined</label>: <input type="text" value="<?php echo get_option('annie_footnoteFormatText', '*'); ?>" name="annie_footnoteFormatText" id="annie_footnoteFormatText" size="4" /><br /><br />
+		</div>
+
 		<div class="annieOptions">
 			<input id="annie_footnote_showNotes" name="annie_footnoteShowNotes"  type="checkbox" value="show" <?php if (get_option('annie_footnoteShowNotes', 'show') == "show") echo "checked" ?> />
 			

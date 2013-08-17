@@ -3,7 +3,7 @@ Contributors: Columcille
 Tags: annotation, highlight, footnote
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 2.0.3
+Stable tag: 2.1.1
 
 Provides comprehensive annotation tools for WordPress posts.
 
@@ -40,6 +40,12 @@ To define new highlighter styles, simply add a rule to your stylesheet following
 2. Seeing the results!
 
 == Changelog ==
+
+= 2.1.1 =
+* Updated to work with the latest Tippy
+
+= 2.1.0 =
+* Adds a new option to manually specify footnote reference.
 
 = 2.0.3 =
 * Fixes an issue with links in the notes going back to the text
